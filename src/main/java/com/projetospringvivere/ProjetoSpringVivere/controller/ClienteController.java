@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,19 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projetospringvivere.ProjetoSpringVivere.model.Cliente;
 import com.projetospringvivere.ProjetoSpringVivere.repository.ClienteRepository;
 
-
-
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/Cliente")
+@RequestMapping(value = "/cliente")
 
 public class ClienteController {
 
 	@Autowired
 
 	private ClienteRepository clienteRepository;
-
-	
 
 	@GetMapping
 	public List<Cliente> listarCliente() {
@@ -47,14 +44,11 @@ public class ClienteController {
 	public Optional<Cliente> listarClienteId(@PathVariable(value = "id") int id) {
 
 		return clienteRepository.findById(id);
-		
-		
 
 	}
 
-	
 	@GetMapping(value = "/search")
-	List<Cliente> listarClienteQuery(@RequestParam("nome") String nome, @RequestParam("cpfcnpJ") String cpfCnpj,
+	List<Cliente> listarClienteQuery(@RequestParam("nome") String nome, @RequestParam("cpfnpj") String cpfCnpj,
 			@RequestParam("cidade") String cidade, @RequestParam("uf") String uf) {
 
 		if (!nome.equals("") && !cpfCnpj.equals("") && !cidade.equals("") && !uf.equals("")) {
@@ -71,30 +65,46 @@ public class ClienteController {
 
 			return clienteRepository.findByCpfCnpjContaining(cpfCnpj);
 		}
-		
-		else if (!cidade.equals("")){
-			
+
+		else if (!cidade.equals("")) {
+
 			return clienteRepository.findByCidadeContaining(cidade);
-		}
-		else if(!uf.equals("")) {
-			
+		} else if (!uf.equals("")) {
+
 			return clienteRepository.findByUfContaining(uf);
 		}
-		
+
 		else {
-			
+
 			return clienteRepository.findAll();
 		}
-		
 
 	}
 
-	
+//	@PostMapping
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public Cliente salvarCliente(@RequestBody Cliente cliente, @RequestParam("cpfcnpJ") String cpfCnpj) {
+//
+//		return clienteRepository.save(cliente);
+//	}
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente salvarCliente(@RequestBody Cliente cliente) {
+	public ResponseEntity<String> verificarCliente(@RequestBody Cliente cliente) {
+		
+		String cpfCnpj = cliente.getCpfCnpj();
 
-		return clienteRepository.save(cliente);
+		List<Cliente> verifica = clienteRepository.findByCpfCnpjContaining(cpfCnpj);
+
+		if (verifica.size() > 0) {
+
+			return ResponseEntity.ok().body("Cliente já cadastrado");
+		} else {
+
+			clienteRepository.save(cliente);
+			return ResponseEntity.ok().body("Cliente foi cadastrado com sucesso");
+		}
+
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -103,7 +113,6 @@ public class ClienteController {
 		clienteRepository.deleteById(id);
 	}
 
-	
 	@PutMapping(value = "/{id}")
 	public Cliente atualizaCliente(@RequestBody Cliente cliente, @PathVariable(value = "id") int id) {
 

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.*;
+/*import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+*/
 import com.projetospringvivere.ProjetoSpringVivere.model.Usuario;
 import com.projetospringvivere.ProjetoSpringVivere.repository.UsuarioRepository;
 
 @RestController
-@RequestMapping(value = "/Usuario")
+@RequestMapping(value = "/usuario")
 @CrossOrigin(origins = "*")
 
 public class UsuarioController {
@@ -41,25 +41,6 @@ public class UsuarioController {
 
 		return usuarioRepository.findById(id);
 
-	}
-
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario salvarUsuario(@RequestBody Usuario usuario) {
-
-		return usuarioRepository.save(usuario);
-	}
-
-	@PutMapping(value = "/{id}")
-	public Usuario atualizarUsuario(@RequestBody Usuario usuario, @PathVariable(value = "id") int id) {
-
-		return usuarioRepository.save(usuario);
-	}
-
-	@DeleteMapping("/{id}")
-	public void deletarUsuario(@PathVariable(value = "id") int id) {
-
-		usuarioRepository.deleteById(id);
 	}
 
 	@GetMapping(value = "/search")
@@ -95,12 +76,12 @@ public class UsuarioController {
 
 			return ResponseEntity.ok().body("Administrado");
 		}
-		
-		   else if (perfilUsuario.getStatus().equals("O")) {
+
+		else if (perfilUsuario.getStatus().equals("O")) {
 
 			return ResponseEntity.ok().body("Operador");
 		}
-		
+
 		else {
 
 			return ResponseEntity.ok().body("Inativo ou não consta");
@@ -116,14 +97,36 @@ public class UsuarioController {
 		if (status == null) {
 
 			return ResponseEntity.notFound().build();
-		} else if (status.getStatus().equals("C")) {
+		}
+
+		else if (status.getStatus().equals("C")) {
 
 			return ResponseEntity.ok().body("Usuario cancelado no sistema");
+
 		} else {
 
 			return ResponseEntity.ok().body("Usuario Logado com sucesso");
 		}
 
+	}
+
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public Usuario salvarUsuario(@RequestBody Usuario usuario) {
+
+		return usuarioRepository.save(usuario);
+	}
+
+	@PutMapping(value = "/{id}")
+	public Usuario atualizarUsuario(@RequestBody Usuario usuario, @PathVariable(value = "id") int id) {
+
+		return usuarioRepository.save(usuario);
+	}
+
+	@DeleteMapping("/{id}")
+	public void deletarUsuario(@PathVariable(value = "id") int id) {
+
+		usuarioRepository.deleteById(id);
 	}
 
 }

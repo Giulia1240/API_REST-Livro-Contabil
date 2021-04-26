@@ -21,7 +21,7 @@ import com.projetospringvivere.ProjetoSpringVivere.model.Livro;
 import com.projetospringvivere.ProjetoSpringVivere.repository.LivroRepository;
 
 @RestController
-@RequestMapping(value = "/Livro") 
+@RequestMapping(value = "/livro") 
 @CrossOrigin(origins = "*")
 
 public class LivroController {
