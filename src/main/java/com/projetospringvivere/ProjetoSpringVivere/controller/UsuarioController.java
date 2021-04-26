@@ -74,7 +74,7 @@ public class UsuarioController {
 			return ResponseEntity.notFound().build();
 		} else if (perfilUsuario.getStatus().equals("A")) {
 
-			return ResponseEntity.ok().body("Administrado");
+			return ResponseEntity.ok().body("Administrador");
 		}
 
 		else if (perfilUsuario.getStatus().equals("O")) {

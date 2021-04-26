@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
@@ -37,8 +38,11 @@ private static final long serialVersionUID=(long) 1L;
 	//@Type(type="String")
     @Column(length=1, nullable=false)
 	private String tipo ;
-	
+    
+    
+    
 	@ManyToOne
+	@JoinColumn(name= "id_cliente", nullable=false) 
 	private Cliente cliente;
 	
 	private LocalDate dataLancamento = LocalDate.now();
@@ -51,9 +55,6 @@ private static final long serialVersionUID=(long) 1L;
 	public void setDataLancamento(LocalDate dataLancamento) {
 		this.dataLancamento = dataLancamento;
 	}
-	
-	
-	
 	
 
 	

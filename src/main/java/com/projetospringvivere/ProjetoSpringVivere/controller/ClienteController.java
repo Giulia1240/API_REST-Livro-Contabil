@@ -3,6 +3,8 @@ package com.projetospringvivere.ProjetoSpringVivere.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Column;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,7 @@ public class ClienteController {
 	private ClienteRepository clienteRepository;
 
 	@GetMapping
+	@Column(nullable=false)
 	public List<Cliente> listarCliente() {
 
 		return clienteRepository.findAll();
@@ -81,12 +84,6 @@ public class ClienteController {
 
 	}
 
-//	@PostMapping
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Cliente salvarCliente(@RequestBody Cliente cliente, @RequestParam("cpfcnpJ") String cpfCnpj) {
-//
-//		return clienteRepository.save(cliente);
-//	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

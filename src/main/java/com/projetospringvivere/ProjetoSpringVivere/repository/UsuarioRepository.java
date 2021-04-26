@@ -21,6 +21,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario ,Integer> {
     @Query(value="select u from Usuario u where u.nome = ?1 and u.email= ?2")
 	Iterable<Usuario> findByNomeContainingAndEmailContaining(String nome, String email);
 	
+    
+	
 	
 	
 	

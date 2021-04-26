@@ -28,6 +28,14 @@ public class LivroController {
 
 	@Autowired
 	private LivroRepository livroRepository;
+	
+	
+	@PostMapping(value="/inserir")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Livro salvarLivro(@RequestBody Livro livro) {
+
+		return livroRepository.save(livro);
+	}
 
 	@GetMapping
 
@@ -43,6 +51,14 @@ public class LivroController {
 
 	}
 	
+	
+	 @GetMapping(value="/id_cliente")
+	 Iterable<Livro> findByQuery(@RequestParam(value="cliente")int cliente){
+		
+		return livroRepository.findByClienteId(cliente);
+	}
+	
+	
 	@GetMapping(value="/search")
 	Iterable<Livro> listarLivroQuery(@RequestParam Integer id){
 		
@@ -50,12 +66,7 @@ public class LivroController {
 		return livroRepository.findByClienteId(id);
 	}
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public Livro salvarLivro(@RequestBody Livro livro) {
-
-		return livroRepository.save(livro);
-	}
+	
 
 	@PutMapping(value="/{id}")
 	public Livro atualizaLivro(@RequestBody Livro livro,@PathVariable(value = "id") int id) {
