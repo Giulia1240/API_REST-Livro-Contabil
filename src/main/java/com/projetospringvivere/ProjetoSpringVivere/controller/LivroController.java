@@ -98,8 +98,7 @@ public class LivroController {
 						item.getValor(), resultado));
 
 			}
-			// Objeto contendo as informações finais (Cliente + result = ArrayList do tipo
-			// RelatorioDTO)
+			// Objeto contendo as informações finais (Cliente + result = ArrayList do tipo RelatorioDTO)
 			infoCliente = new LivroDto(obj.get(0).getCliente().getId(), obj.get(0).getCliente().getCpfCnpj(),
 			obj.get(0).getCliente().getNome(), obj.get(0).getCliente().getTelefone(), result);
 		}
