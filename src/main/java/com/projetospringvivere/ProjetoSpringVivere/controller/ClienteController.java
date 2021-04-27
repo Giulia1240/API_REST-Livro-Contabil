@@ -110,9 +110,12 @@ public class ClienteController {
 		clienteRepository.deleteById(id);
 	}
 
+	
 	@PutMapping(value = "/{id}")
 	public Cliente atualizaCliente(@RequestBody Cliente cliente, @PathVariable(value = "id") int id) {
 
+		cliente.setId(id);
+		
 		return clienteRepository.save(cliente);
 	}
 

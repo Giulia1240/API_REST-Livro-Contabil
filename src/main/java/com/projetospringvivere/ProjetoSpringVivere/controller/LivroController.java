@@ -51,32 +51,35 @@ public class LivroController {
 
 	}
 
-	@GetMapping(value = "/id_cliente")
-	Iterable<Livro> findByQuery(@RequestParam(value = "cliente") int cliente) {
 
-		return livroRepository.findByClienteId(cliente);
-	}
-
-	@GetMapping(value = "/search")
-	Iterable<Livro> listarLivroQuery(@RequestParam Integer id) {
+	@GetMapping(value = "/search/{id}")
+	Iterable<Livro> listarLivroQuery(@PathVariable(value = "id") int id) {
 
 		return livroRepository.findByClienteId(id);
 	}
+	
+	
 
 	@GetMapping(value = "/relatorio")
 	public ResponseEntity<LivroDto> verficaDebitoOuCredito(@RequestParam(value = "cliente") int cliente,
-			@RequestParam("data_ini") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDate dataLancamentoUm,
-			@RequestParam("data_fim") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDate dataLancamentoDois,
+			@RequestParam(value="data_ini", defaultValue="") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDate dataLancamentoUm,
+			@RequestParam(value="data_fim", defaultValue="") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDate dataLancamentoDois,
 			@RequestParam float saldo) {
 
+		if(dataLancamentoUm.equals(dataLancamentoUm(""))||dataLancamentoDois.equals(dataLancamentoDois(""))) {
+			List<Livro> obj = livroRepository.findByContabil(cliente);
+		}
+		
 		List<Livro> obj = livroRepository.findByContabil(cliente, dataLancamentoUm, dataLancamentoDois);
 		ArrayList<RelatorioDto> result = new ArrayList<RelatorioDto>();
+
 		float valor = 0, resultado = 0;
+
 		LivroDto infoCliente = null;
 		if (obj.size() > 0) {
 
 			// Valor inicial = saldo
-			// No for abaixo o resultado vai sendo modificado de acordo com os lancamentos
+			// Abaixo o resultado vai sendo modificado de acordo com os lancamentos
 			resultado = saldo;
 			for (Livro item : obj) {
 				valor = item.getValor();
@@ -98,15 +101,28 @@ public class LivroController {
 			// Objeto contendo as informações finais (Cliente + result = ArrayList do tipo
 			// RelatorioDTO)
 			infoCliente = new LivroDto(obj.get(0).getCliente().getId(), obj.get(0).getCliente().getCpfCnpj(),
-					obj.get(0).getCliente().getNome(), obj.get(0).getCliente().getTelefone(), result);
+			obj.get(0).getCliente().getNome(), obj.get(0).getCliente().getTelefone(), result);
 		}
 		return new ResponseEntity<LivroDto>(infoCliente, HttpStatus.OK);
+		
+		
 
+	}
+
+	private Object dataLancamentoDois(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Object dataLancamentoUm(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@PutMapping(value = "/{id}")
 	public Livro atualizaLivro(@RequestBody Livro livro, @PathVariable(value = "id") int id) {
 
+		livro.setId(id);
 		return livroRepository.save(livro);
 	}
 

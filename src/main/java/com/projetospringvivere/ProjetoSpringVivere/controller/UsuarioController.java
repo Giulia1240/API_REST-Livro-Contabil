@@ -96,7 +96,7 @@ public class UsuarioController {
 
 		if (status == null) {
 
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok().body("Usuario não encontrado");
 		}
 
 		else if (status.getStatus().equals("C")) {
@@ -120,6 +120,8 @@ public class UsuarioController {
 	@PutMapping(value = "/{id}")
 	public Usuario atualizarUsuario(@RequestBody Usuario usuario, @PathVariable(value = "id") int id) {
 
+		usuario.setId(id);
+		
 		return usuarioRepository.save(usuario);
 	}
 
