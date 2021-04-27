@@ -1,6 +1,5 @@
 package com.projetospringvivere.ProjetoSpringVivere.model;
 
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -12,58 +11,44 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
-
-
-
-
-
 @Entity
-public class Livro implements Serializable{
-	
-private static final long serialVersionUID=(long) 1L;
-	
-	
+public class Livro implements Serializable {
+
+	private static final long serialVersionUID = (long) 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	
-	
-	
+
 	private int id;
-	@Column(length=50, nullable=false)
+	@Column(length = 50, nullable = false)
 	private String descricao;
-	@Column(length=12, nullable=false)
+	@Column(length = 12, nullable = false)
 	private float valor;
+
+	// @Type(type="String")
+	@Column(length = 1, nullable = false)
+	private String tipo;
 	
-	//@Type(type="String")
-    @Column(length=1, nullable=false)
-	private String tipo ;
-    
-    
-    
 	@ManyToOne
-	@JoinColumn(name= "id_cliente", nullable=false) 
+	@JoinColumn(name = "id_cliente", referencedColumnName="id")
 	private Cliente cliente;
-	
+
 	private LocalDate dataLancamento = LocalDate.now();
-	
-	
+
 	public LocalDate getDataLancamento() {
 		return dataLancamento;
 	}
-	
+
 	public void setDataLancamento(LocalDate dataLancamento) {
 		this.dataLancamento = dataLancamento;
 	}
-	
 
-	
 	public Livro() {
-		
+
 	}
-	
+
 	public Livro(int id, String descricao, float valor, LocalDate dataLancamento, String tipo, Cliente cliente) {
-		
+
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
@@ -71,39 +56,47 @@ private static final long serialVersionUID=(long) 1L;
 		this.tipo = tipo;
 		this.cliente = cliente;
 	}
-	
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getDescricao() {
 		return descricao;
 	}
+
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
 	public float getValor() {
 		return valor;
 	}
+
 	public void setValor(float valor) {
 		this.valor = valor;
 	}
+
 	public String getTipo() {
 		return tipo;
 	}
+
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}
+
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -111,6 +104,7 @@ private static final long serialVersionUID=(long) 1L;
 		result = prime * result + id;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -124,6 +118,5 @@ private static final long serialVersionUID=(long) 1L;
 			return false;
 		return true;
 	}
-
 
 }
